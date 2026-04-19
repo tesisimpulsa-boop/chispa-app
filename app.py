@@ -201,29 +201,67 @@ def inject_css():
                 border-radius: 12px !important;
                 font-size: 1.25rem !important;
                 min-height: 58px !important;
+                border: 1px solid #3a3a3a !important;
+            }
+
+            .stSelectbox div[data-baseweb="select"] span {
+                color: #FFFFFF !important;
+            }
+
+            .stSelectbox div[data-baseweb="select"] input {
+                color: #FFFFFF !important;
             }
 
             div[data-baseweb="popover"] {
-                background-color: #151515 !important;
+                background: #151515 !important;
+                color: #FFFFFF !important;
+                border: 1px solid #333333 !important;
+            }
+
+            div[data-baseweb="popover"] * {
+                color: #FFFFFF !important;
             }
 
             div[data-baseweb="menu"] {
+                background: #151515 !important;
+                color: #FFFFFF !important;
+            }
+
+            div[data-baseweb="menu"] * {
                 background-color: #151515 !important;
                 color: #FFFFFF !important;
             }
 
-            div[data-baseweb="menu"] ul {
+            ul[role="listbox"] {
                 background-color: #151515 !important;
+                color: #FFFFFF !important;
             }
 
-            div[data-baseweb="menu"] li {
+            ul[role="listbox"] li {
                 background-color: #151515 !important;
                 color: #FFFFFF !important;
                 font-size: 1.15rem !important;
             }
 
-            div[data-baseweb="menu"] li:hover {
+            li[role="option"] {
+                background-color: #151515 !important;
+                color: #FFFFFF !important;
+                font-size: 1.15rem !important;
+            }
+
+            li[role="option"] * {
+                color: #FFFFFF !important;
+                background-color: transparent !important;
+            }
+
+            li[role="option"]:hover,
+            li[role="option"][aria-selected="true"] {
                 background-color: #2a2a2a !important;
+                color: #FFD54F !important;
+            }
+
+            li[role="option"]:hover *,
+            li[role="option"][aria-selected="true"] * {
                 color: #FFD54F !important;
             }
 
@@ -238,8 +276,19 @@ def inject_css():
                 font-size: 1.15rem !important;
             }
 
-            div[role="option"]:hover {
+            div[role="option"] * {
+                color: #FFFFFF !important;
+                background-color: transparent !important;
+            }
+
+            div[role="option"]:hover,
+            div[role="option"][aria-selected="true"] {
                 background-color: #2a2a2a !important;
+                color: #FFD54F !important;
+            }
+
+            div[role="option"]:hover *,
+            div[role="option"][aria-selected="true"] * {
                 color: #FFD54F !important;
             }
 
