@@ -203,6 +203,46 @@ def inject_css():
                 min-height: 58px !important;
             }
 
+            div[data-baseweb="popover"] {
+                background-color: #151515 !important;
+            }
+
+            div[data-baseweb="menu"] {
+                background-color: #151515 !important;
+                color: #FFFFFF !important;
+            }
+
+            div[data-baseweb="menu"] ul {
+                background-color: #151515 !important;
+            }
+
+            div[data-baseweb="menu"] li {
+                background-color: #151515 !important;
+                color: #FFFFFF !important;
+                font-size: 1.15rem !important;
+            }
+
+            div[data-baseweb="menu"] li:hover {
+                background-color: #2a2a2a !important;
+                color: #FFD54F !important;
+            }
+
+            div[role="listbox"] {
+                background-color: #151515 !important;
+                color: #FFFFFF !important;
+            }
+
+            div[role="option"] {
+                background-color: #151515 !important;
+                color: #FFFFFF !important;
+                font-size: 1.15rem !important;
+            }
+
+            div[role="option"]:hover {
+                background-color: #2a2a2a !important;
+                color: #FFD54F !important;
+            }
+
             input::placeholder,
             textarea::placeholder {
                 color: #FFFFFF !important;
