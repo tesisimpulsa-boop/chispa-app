@@ -24,14 +24,6 @@ AUDIO_BIENVENIDA = ASSETS_DIR / "Bienvenido.mp3"
 AUDIO_PENSANDO = ASSETS_DIR / "Pensando.mp3"
 AUDIO_EXITO = ASSETS_DIR / "Felicidades.mp3"
 
-AREAS_OBJETIVO = [
-    "Creatividad",
-    "Emociones",
-    "Motricidad",
-    "Lenguaje",
-    "Socialización",
-]
-
 SYSTEM_PROMPT_TEMPLATE = """
 Actúa como "Chispa", un experto en psicología educativa y desarrollo infantil.
 Tu objetivo es diseñar una actividad manual, recreativa y educativa personalizada, estrictamente sin el uso de pantallas.
@@ -45,6 +37,43 @@ Datos del usuario:
 Instrucciones estrictas de formato y tono:
 - Utiliza un tono cálido, elegante, profesional y sumamente respetuoso.
 - No incluyas introducciones, saludos genéricos ni expliques tu proceso lógico; ve directamente a la entrega del plan.
+- Estructura tu respuesta utilizando exactamente los siguientes apartados en negritas:
+
+**TÍTULO DE LA ACTIVIDAD:**
+(Un nombre creativo y llamativo)
+
+**MATERIALES NECESARIOS:**
+(Únicamente artículos comunes y seguros que se encuentren en cualquier hogar)
+
+**PASO A PASO:**
+(Instrucciones claras, prácticas y concisas)
+
+**HITO DE DESARROLLO:**
+(Una explicación breve y profesional de la habilidad cognitiva, motriz o emocional específica que se está fortaleciendo con esta actividad)
+""".strip()
+
+REFINE_PROMPT_TEMPLATE = """
+Actúa como "Chispa", un experto en psicología educativa y desarrollo infantil.
+
+Tu tarea es rediseñar un plan pedagógico completo, mejorado con base en el feedback del padre o tutor.
+
+Datos del usuario:
+- Nombre del niño/a: {nombre}
+- Edad: {edad} años
+- Objetivo a trabajar: {objetivo}
+- Tiempo disponible del padre/tutor: {tiempo}
+
+Plan anterior:
+{plan_anterior}
+
+Feedback del padre o tutor:
+{feedback}
+
+Instrucciones estrictas:
+- Diseña un nuevo plan completo, mejorado con base en el feedback.
+- No expliques tu proceso.
+- No respondas como chat; entrega directamente el nuevo plan.
+- Utiliza un tono cálido, elegante, profesional y sumamente respetuoso.
 - Estructura tu respuesta utilizando exactamente los siguientes apartados en negritas:
 
 **TÍTULO DE LA ACTIVIDAD:**
@@ -158,14 +187,6 @@ def inject_css():
                 color: #FFFFFF;
             }
 
-            .hero-card {
-                background: rgba(255, 255, 255, 0.04);
-                border: 1px solid rgba(255, 204, 51, 0.18);
-                border-radius: 24px;
-                padding: 1.4rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-            }
-
             .stButton > button,
             .stFormSubmitButton > button {
                 background: linear-gradient(90deg, #ffd54f 0%, #ffb300 100%);
@@ -179,7 +200,7 @@ def inject_css():
 
             .stTextInput label,
             .stNumberInput label,
-            .stSelectbox label {
+            .stTextArea label {
                 color: #FFFFFF !important;
                 font-size: 1.45rem !important;
                 font-weight: 700 !important;
@@ -187,116 +208,20 @@ def inject_css():
             }
 
             .stTextInput input,
-            .stNumberInput input {
+            .stNumberInput input,
+            .stTextArea textarea {
                 background-color: #151515 !important;
                 color: #FFFFFF !important;
                 border-radius: 12px !important;
-                font-size: 1.25rem !important;
+                font-size: 1.15rem !important;
                 padding: 0.85rem 1rem !important;
-            }
-
-            .stSelectbox div[data-baseweb="select"] > div {
-                background-color: #151515 !important;
-                color: #FFFFFF !important;
-                border-radius: 12px !important;
-                font-size: 1.25rem !important;
-                min-height: 58px !important;
-                border: 1px solid #3a3a3a !important;
-            }
-
-            .stSelectbox div[data-baseweb="select"] span {
-                color: #FFFFFF !important;
-            }
-
-            .stSelectbox div[data-baseweb="select"] input {
-                color: #FFFFFF !important;
-            }
-
-            div[data-baseweb="popover"] {
-                background: #151515 !important;
-                color: #FFFFFF !important;
-                border: 1px solid #333333 !important;
-            }
-
-            div[data-baseweb="popover"] * {
-                color: #FFFFFF !important;
-            }
-
-            div[data-baseweb="menu"] {
-                background: #151515 !important;
-                color: #FFFFFF !important;
-            }
-
-            div[data-baseweb="menu"] * {
-                background-color: #151515 !important;
-                color: #FFFFFF !important;
-            }
-
-            ul[role="listbox"] {
-                background-color: #151515 !important;
-                color: #FFFFFF !important;
-            }
-
-            ul[role="listbox"] li {
-                background-color: #151515 !important;
-                color: #FFFFFF !important;
-                font-size: 1.15rem !important;
-            }
-
-            li[role="option"] {
-                background-color: #151515 !important;
-                color: #FFFFFF !important;
-                font-size: 1.15rem !important;
-            }
-
-            li[role="option"] * {
-                color: #FFFFFF !important;
-                background-color: transparent !important;
-            }
-
-            li[role="option"]:hover,
-            li[role="option"][aria-selected="true"] {
-                background-color: #2a2a2a !important;
-                color: #FFD54F !important;
-            }
-
-            li[role="option"]:hover *,
-            li[role="option"][aria-selected="true"] * {
-                color: #FFD54F !important;
-            }
-
-            div[role="listbox"] {
-                background-color: #151515 !important;
-                color: #FFFFFF !important;
-            }
-
-            div[role="option"] {
-                background-color: #151515 !important;
-                color: #FFFFFF !important;
-                font-size: 1.15rem !important;
-            }
-
-            div[role="option"] * {
-                color: #FFFFFF !important;
-                background-color: transparent !important;
-            }
-
-            div[role="option"]:hover,
-            div[role="option"][aria-selected="true"] {
-                background-color: #2a2a2a !important;
-                color: #FFD54F !important;
-            }
-
-            div[role="option"]:hover *,
-            div[role="option"][aria-selected="true"] * {
-                color: #FFD54F !important;
             }
 
             input::placeholder,
             textarea::placeholder {
                 color: #FFFFFF !important;
                 opacity: 0.75 !important;
-                font-size: 1.1rem !important;
+                font-size: 1.05rem !important;
             }
 
             .caption-box {
@@ -308,6 +233,14 @@ def inject_css():
                 margin-bottom: 1.2rem;
                 color: #FFFFFF !important;
                 font-size: 1.08rem;
+            }
+
+            .feedback-box {
+                margin-top: 2rem;
+                padding: 1rem;
+                border: 1px solid rgba(255, 204, 51, 0.22);
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.03);
             }
 
             .stInfo, .stSuccess, .stError, .stWarning {
@@ -358,6 +291,8 @@ def init_state():
         "generated_plan": None,
         "db_saved": False,
         "last_error": None,
+        "feedback_history": [],
+        "latest_feedback": "",
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -373,6 +308,17 @@ def build_prompt(child_data: dict) -> str:
     )
 
 
+def build_refine_prompt(child_data: dict, plan_anterior: str, feedback: str) -> str:
+    return REFINE_PROMPT_TEMPLATE.format(
+        nombre=child_data["nombre"],
+        edad=child_data["edad"],
+        objetivo=child_data["objetivo"],
+        tiempo=child_data["tiempo"],
+        plan_anterior=plan_anterior,
+        feedback=feedback,
+    )
+
+
 def generate_plan(child_data: dict) -> str:
     model = get_gemini_model()
     prompt = build_prompt(child_data)
@@ -383,7 +329,17 @@ def generate_plan(child_data: dict) -> str:
     return text.strip()
 
 
-def save_to_mongodb(child_data: dict, plan: str):
+def refine_plan(child_data: dict, plan_anterior: str, feedback: str) -> str:
+    model = get_gemini_model()
+    prompt = build_refine_prompt(child_data, plan_anterior, feedback)
+    response = model.generate_content(prompt)
+    text = getattr(response, "text", "")
+    if not text or not text.strip():
+        raise ValueError("Gemini no devolvió un plan corregido utilizable.")
+    return text.strip()
+
+
+def save_to_mongodb(child_data: dict, plan: str, feedback: str | None = None):
     collection = get_mongo_collection()
     document = {
         "nombre_nino": child_data["nombre"],
@@ -391,6 +347,7 @@ def save_to_mongodb(child_data: dict, plan: str):
         "objetivo": child_data["objetivo"],
         "tiempo_disponible": child_data["tiempo"],
         "plan_generado": plan,
+        "feedback": feedback or "",
         "created_at": datetime.now(timezone.utc),
         "app": "Chispa",
     }
@@ -405,6 +362,8 @@ def reset_app():
         "db_saved",
         "last_error",
         "played_audio",
+        "feedback_history",
+        "latest_feedback",
     ]
     for key in keys_to_clear:
         if key in st.session_state:
@@ -442,14 +401,22 @@ def render_welcome_screen():
     with st.form("chispa_form"):
         nombre = st.text_input("¿Cómo se llama tu hijo o hija?")
         edad = st.number_input("¿Qué edad tiene?", min_value=0, max_value=12, step=1)
-        objetivo = st.selectbox("¿Qué objetivo deseas trabajar hoy?", AREAS_OBJETIVO)
-        tiempo = st.text_input("¿Cuánto tiempo disponible tienes hoy?", placeholder="Ej. 20 minutos, 1 hora, toda la tarde")
+        objetivo = st.text_input(
+            "¿Qué quieres trabajar hoy?",
+            placeholder="Ej. lenguaje, manejo de emociones, paciencia, concentración, motricidad fina..."
+        )
+        tiempo = st.text_input(
+            "¿Cuánto tiempo disponible tienes hoy?",
+            placeholder="Ej. 20 minutos, 1 hora, toda la tarde"
+        )
         submitted = st.form_submit_button("Generar plan pedagógico")
 
     if submitted:
         errores = []
         if not nombre or not nombre.strip():
             errores.append("Escribe el nombre del niño o niña.")
+        if not objetivo or not objetivo.strip():
+            errores.append("Escribe qué quieres trabajar hoy.")
         if not tiempo or not tiempo.strip():
             errores.append("Escribe el tiempo disponible.")
 
@@ -461,7 +428,7 @@ def render_welcome_screen():
         st.session_state.child_data = {
             "nombre": nombre.strip(),
             "edad": int(edad),
-            "objetivo": objetivo,
+            "objetivo": objetivo.strip(),
             "tiempo": tiempo.strip(),
         }
         st.session_state.step = "thinking"
@@ -502,6 +469,37 @@ def render_thinking_screen():
                 st.rerun()
 
 
+def render_feedback_area(child: dict, plan_actual: str):
+    st.markdown("<div class='feedback-box'>", unsafe_allow_html=True)
+    st.subheader("¿Quieres ajustar algo del plan?")
+    feedback = st.text_area(
+        "Escribe aquí tu comentario para que Chispa lo mejore",
+        placeholder="Ej. Quiero algo más corto, sin tijeras, más enfocado en lenguaje, más divertido, con menos materiales..."
+    )
+
+    if st.button("Mejorar este plan con mi comentario"):
+        if not feedback or not feedback.strip():
+            st.warning("Escribe primero qué te gustaría cambiar del plan.")
+        else:
+            try:
+                with st.spinner("Chispa está rediseñando el plan con tu comentario..."):
+                    nuevo_plan = refine_plan(child, plan_actual, feedback.strip())
+                    save_to_mongodb(child, nuevo_plan, feedback.strip())
+
+                st.session_state.generated_plan = nuevo_plan
+                st.session_state.latest_feedback = feedback.strip()
+                st.session_state.feedback_history.append({
+                    "feedback": feedback.strip(),
+                    "created_at": datetime.now(timezone.utc).isoformat()
+                })
+                st.success("Chispa mejoró el plan con base en tu comentario.")
+                st.rerun()
+            except Exception as exc:
+                st.error(f"Hubo un problema al mejorar el plan: {exc}")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
 def render_result_screen():
     play_audio_once("result", AUDIO_EXITO)
     render_header(GIF_EXITO)
@@ -519,6 +517,8 @@ def render_result_screen():
         st.success("La solicitud y el plan fueron guardados correctamente en la base de datos.")
 
     st.markdown(plan)
+
+    render_feedback_area(child, plan)
 
     col_a, col_b = st.columns(2)
     with col_a:
